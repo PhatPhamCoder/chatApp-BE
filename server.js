@@ -4,8 +4,8 @@ const morgan = require("morgan");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-import { readFileSync } from "fs";
-import { createServer } from "https";
+const { readFileSync } = require("fs");
+const { createServer } = require("https");
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
