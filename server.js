@@ -27,10 +27,6 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/rooms", roomRoutes);
 
-httpsServer.listen(process.env.PORT, () => {
-  console.log(`Server is running port ${process.env.PORT}`);
-});
-
 const httpsServer = createServer({
   key: readFileSync("/path/to/server-key.pem"),
   cert: readFileSync("/path/to/server-cert.pem"),
@@ -45,6 +41,10 @@ const io = new socket(httpsServer, {
     credentials: true,
     methods: ["GET", "POST"],
   },
+});
+
+httpsServer.listen(process.env.PORT, () => {
+  console.log(`Server is running port ${process.env.PORT}`);
 });
 
 const sockets = new Map();
