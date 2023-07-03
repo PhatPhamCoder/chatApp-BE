@@ -4,7 +4,8 @@ const morgan = require("morgan");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-const fs = require("fs");
+import { readFileSync } from "fs";
+import { createServer } from "https";
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
@@ -26,12 +27,19 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/rooms", roomRoutes);
 
-const server = app.listen(process.env.PORT, () => {
+httpsServer.listen(process.env.PORT, () => {
   console.log(`Server is running port ${process.env.PORT}`);
 });
 
+const httpsServer = createServer({
+  key: readFileSync("/path/to/server-key.pem"),
+  cert: readFileSync("/path/to/server-cert.pem"),
+  requestCert: true,
+  ca: [readFileSync("/path/to/client-cert.pem")],
+});
+
 /**Config Socket.io */
-const io = socket(server, {
+const io = new socket(httpsServer, {
   cors: {
     origin: process.env.REACT_APP,
     credentials: true,
